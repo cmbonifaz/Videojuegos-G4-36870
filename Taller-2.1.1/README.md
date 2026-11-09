@@ -1,7 +1,6 @@
 # Taller PRACT-EXP: Investigación de Dispositivo de Entrada (Gamepad)
 
-Este repositorio contiene la investigación correspondiente al taller práctico de dispositivos de entrada para el desarrollo de videojuegos.
-
+Integrantes: Christian Bonifaz, Anabel Dávila, Alejandro Montufar
 ---
 
 ## 📋 Ficha de Dispositivo
@@ -39,8 +38,3 @@ El gamepad es un dispositivo híbrido fascinante en cuanto a procesamiento de se
 2. ***Halo: Combat Evolved* (Bungie / Microsoft, 2001):** 
    * **Por qué lo hizo popular:** Demostró de manera definitiva que los shooters en primera persona (género dominado históricamente por PC con teclado y ratón) se podían jugar de forma sumamente fluida y natural en consola gracias a la estandarización del **doble joystick analógico** (uno para mover al personaje y otro para controlar la cámara libremente).
 
----
-
-## 🚀 Instrucciones de Entrega
-* Carpeta asignada en el repositorio de GitHub: `taller-2.1.1`
-* Tiempo estimado de presentación en clase: 2 minutos.
