@@ -145,30 +145,56 @@ if event is InputEventKey and event.keycode == KEY_SPACE:
 
 ---
 
-## 3. Reto para los compañeros (Paso 4) — `[ESPACIO PENDIENTE — COMPAÑERO]`
+## 3. Reto para los compañeros (Paso 4)
 
-> **Nota:** Esta sección queda reservada para el reto que está preparando el compañero encargado del Paso 4. Completar los cuatro apartados siguientes antes de la entrega.
+> **Guía completa y proyecto solución:** ver [Reto_Grupo4.md](Reto_Grupo4.md) y el proyecto ejecutable en `clase-2.1.4/reto-g-4/`.
 
-- **Enunciado (1–2 frases):**
-  `[Completar aquí el enunciado claro y breve del reto, pidiendo algo nuevo respecto al ejercicio]`
+- **Enunciado (2 frases):**
+  Partiendo del proyecto del ejercicio (`Ejercicio_G4`), añade una función de **remapeo en tiempo de ejecución** para que el jugador pueda reasignar la acción `saltar` a cualquier otra tecla o botón (por ejemplo, `W`, `Clic derecho` o un botón de mando) sin detener el juego. La lógica que ejecuta el salto (`is_action_pressed("saltar")` e `is_action_released("saltar")`) **no debe modificarse**.
 
-- **Requisitos comprobables (2–3 puntos):**
-  1. `[Completar requisito 1]`
-  2. `[Completar requisito 2]`
-  3. `[Completar requisito 3 (opcional)]`
+- **Requisitos comprobables (3 puntos):**
+  1. Crear una nueva acción **`remapear`** en el *Mapa de entrada* (asignada a la tecla **`R`**) que ponga el juego en modo de espera para capturar la nueva entrada.
+  2. Al presionar la siguiente tecla, botón del ratón o botón de mando, reemplazar los eventos de la acción **`saltar`** mediante `InputMap` (`action_erase_events` y `action_add_event`), sin tocar el bloque de código que maneja `"saltar"`.
+  3. Mostrar en el **`Hud`** el estado de espera y el nuevo control asignado (`event.as_text()`), comprobando que el control anterior dejó de activar `saltar` y el nuevo sí lo activa.
 
-- **Tiempo estimado:** `7 minutos`
+- **Tiempo estimado:** `7 minutos` (1 min *Mapa de entrada*, 3,5 min captura y `InputMap` en `main.gd`, 1 min actualización del `Hud`, 1,5 min pruebas con teclado y ratón).
 
 - **Cómo se sabe que está logrado (qué debe verse en pantalla):**
-  `[Completar aquí el resultado visual esperado en pantalla]`
+  Al pulsar **`R`**, `Cuadro` cambia a amarillo y el `Hud` muestra `Estado: Esperando nueva tecla o botón...` sin reaccionar al movimiento del ratón. Al pulsar una nueva entrada (por ejemplo, `W` o `Clic derecho`), `Cuadro` vuelve a azul, el `Hud` actualiza `Control asignado:` con el nuevo botón, `Espacio` y `Clic izquierdo` dejan de activar `saltar`, y el nuevo botón eleva `Cuadro` 40 píxeles en verde sumando en `Activaciones` y actualizando `Dispositivo` y `Último evento`.
 
-- **Pista (para apoyar al curso durante el reto):**
-  `[Completar aquí la pista que el grupo dará si los compañeros se traban]`
+- **Pista (para apoyar al curso durante el reto — guardar hasta la mitad del tiempo):**
+  Usa una variable booleana `remapeando := false` que cambie a `true` al pulsar `remapear` (`R`) y haz `return`. Mientras `remapeando` sea `true`, comprueba `event.is_pressed()` y filtra la clase (`event is InputEventKey or event is InputEventMouseButton or event is InputEventJoypadButton`) para que mover el ratón o soltar `R` no sobrescriban el control; luego llama a `InputMap.action_erase_events("saltar")` y `InputMap.action_add_event("saltar", event)`.
 
-- **Solución (para mostrar en el cierre):**
+- **Solución (para mostrar en el cierre — `reto-g-4/main.gd`):**
 
 ```gdscript
-# [Completar aquí los pasos o el código solución del reto]
+# Variables nuevas del reto
+var remapeando := false
+var control_actual := "Espacio / Clic izquierdo"
+
+# Al inicio de _input(event), antes del bloque original de "saltar":
+	if remapeando:
+		var es_entrada_valida := (
+			event is InputEventKey
+			or event is InputEventMouseButton
+			or event is InputEventJoypadButton
+		)
+		if event.is_pressed() and es_entrada_valida and not event.is_action("remapear"):
+			InputMap.action_erase_events("saltar")
+			InputMap.action_add_event("saltar", event)
+			remapeando = false
+			control_actual = event.as_text()
+			estado = "Control remapeado"
+			cuadro.color = Color("#3380e6")
+			actualizar_hud()
+		return
+
+	if event.is_action_pressed("remapear"):
+		remapeando = true
+		estado = "Esperando nueva tecla o botón..."
+		cuadro.color = Color.GOLD
+		actualizar_hud()
+		return
 ```
 
 ---
@@ -180,8 +206,8 @@ if event is InputEventKey and event.keycode == KEY_SPACE:
 | **0 – 3 min** | Apertura | Presentación del grupo, del subtema (*Una acción, muchos dispositivos*) y de los 3 objetivos de aprendizaje. | `[Integrante]` |
 | **3 – 12 min** | Presentación | Explicación conceptual, ventajas (pruebas, remapeo y accesibilidad), error frecuente y ejemplo de *Celeste*. | `[Integrante(s)]` |
 | **12 – 20 min** | Ejercicio en vivo | Demostración paso a paso en Godot 4.7.x (`ejercicio-g-4/`): teclado primero y segundo dispositivo sin cambiar el código. | `[Integrante(s)]` |
-| **20 – 27 min** | Reto para el curso | `[Completar breve resumen del reto]` — el grupo acompaña y entrega la pista si hace falta. | `Todos` |
-| **27 – 30 min** | Cierre | Mostrar la solución del reto y resumir las tres ideas clave. | `[Integrante]` |
+| **20 – 27 min** | Reto para el curso | Remapeo en tiempo de ejecución de la acción `saltar` con `InputMap` (tecla `R`) sin modificar la lógica del salto — el grupo acompaña y entrega la pista si hace falta. | `Todos` |
+| **27 – 30 min** | Cierre | Mostrar la solución del reto (`reto-g-4/`) y resumir las tres ideas clave. | `[Integrante]` |
 
 ---
 
