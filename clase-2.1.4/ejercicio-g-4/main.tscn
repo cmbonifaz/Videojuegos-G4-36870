@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://3ot7y5p75s56"]
+
+[ext_resource type="Script" uid="uid://pspwrfgbd4lp" path="res://main.gd" id="1_ig7tw"]
+
+[node name="Main" type="Node2D" unique_id=163112784]
+script = ExtResource("1_ig7tw")
+
+[node name="Cuadro" type="ColorRect" parent="." unique_id=71229119]
+offset_left = 300.0
+offset_top = 250.0
+offset_right = 400.0
+offset_bottom = 350.0
+color = Color(0.2, 0.5019608, 0.9019608, 1)
+
+[node name="Hud" type="Label" parent="." unique_id=544539915]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 43.0
+text = "Ejercicio"
