@@ -13,23 +13,9 @@
 
 ## Integrantes
 
-- [Integrante 1]
-- [Integrante 2]
-- [Integrante 3]
-- [Integrante 4]
-
-> *Completar con los nombres reales de los integrantes del Grupo 4 antes de la entrega final.*
-
----
-
-## Contenido de la carpeta (`clase-2.1.4/`)
-
-- `ejercicio-g-4/` — Proyecto de Godot (`Ejercicio_G4`) con `project.godot`, `main.tscn` y `main.gd`, donde la acción `saltar` está configurada con teclado y ratón.
-- `Guia_Ejercicio_Grupo4.md` — Guía paso a paso para recrear y explicar el ejercicio en vivo.
-- `investigacion_paso1.md` — Investigación teórica del subtema y referencias bibliográficas en formato APA 7.
-- `Guia_Actividad_Clase_Magistral_2.1.md` — Enunciado y criterios de la actividad.
-
-> **Nota para la entrega final (Paso 6):** recuerda añadir a esta carpeta la presentación en PDF, el reto para los compañeros con su solución y la plantilla del plan de clase completada en PDF.
+- Christian Bonifaz
+- Anabel Dávila
+- Alejandro Montufar
 
 ---
 

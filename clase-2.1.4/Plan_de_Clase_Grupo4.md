@@ -10,7 +10,7 @@
 | **Subtema** | **4. Una acción, muchos dispositivos** |
 | **Duración máxima** | 30 minutos |
 | **Herramienta** | Godot 4.7.x · GDScript |
-| **Integrantes** | `[Completar nombres del Grupo 4]` |
+| **Integrantes** | Christian Bonifaz <br> Anabel Dávila <br> Alejandro Montufar |
 
 ---
 
