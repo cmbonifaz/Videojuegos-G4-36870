@@ -11,6 +11,7 @@
 | **Duración máxima** | 30 minutos |
 | **Herramienta** | Godot 4.7.x · GDScript |
 | **Integrantes** | Christian Bonifaz <br> Anabel Dávila <br> Alejandro Montufar |
+| **Repositorio (entrega)** | https://github.com/cmbonifaz/Videojuegos-G4-36870/tree/main/clase-2.1.4 |
 
 ---
 
@@ -136,12 +137,102 @@ if event is InputEventKey and event.keycode == KEY_SPACE:
 | **Proyecto** | `clase-2.1.4/ejercicio-g-4/` (`Ejercicio_G4`) |
 | **Escena y script** | `main.tscn` (`Main`, `Cuadro` [`ColorRect`], `Hud` [`Label`]) y `main.gd` |
 | **Duración en vivo** | ~8 minutos |
-| **Guía detallada** | Ver paso a paso replicable en [Guia_Ejercicio_Grupo4.md](file:///c:/Users/mateo/Desktop/Videojuegos/Videojuegos-G4-36870/clase-2.1.4/Guia_Ejercicio_Grupo4.md) |
+| **Pasos escritos** | Ver la sección *Pasos para repetir el ejercicio* (abajo) |
 
 ### Flujo de la demostración en dos fases
 
 1. **Fase 1 (Solo teclado):** se crea la escena con los 3 nodos, se configura la acción `saltar` únicamente con `Espacio` en el *Mapa de entrada* y se escribe `main.gd`. Al ejecutar (`F5` / `F6`), `Cuadro` sube 40 píxeles y cambia a verde al presionar `Espacio`, mientras `Hud` muestra `Dispositivo: Teclado` (`InputEventKey`). Al hacer clic con el ratón aún no ocurre nada.
 2. **Fase 2 (Segundo dispositivo sin tocar el código):** se detiene la ejecución, se abre el *Mapa de entrada* y se agrega **Botón izquierdo del ratón** (y opcionalmente un botón de mando) a la acción `saltar`, **sin editar ni una línea de `main.gd`**. Al volver a ejecutar y alternar entre `Espacio` y `Clic izquierdo`, `Cuadro` reacciona exactamente igual y el `Hud` confirma el cambio de dispositivo.
+
+### Pasos para repetir el ejercicio
+
+| Tiempo | Actividad |
+| --- | --- |
+| 0:00 – 1:30 | Crear la escena con 3 nodos |
+| 1:30 – 2:30 | Crear la acción `saltar` solo con `Espacio` |
+| 2:30 – 5:00 | Escribir `main.gd` y probar con teclado |
+| 5:00 – 6:30 | Agregar `Botón izquierdo del ratón` sin tocar el código |
+| 6:30 – 8:00 | Probar ambos dispositivos y explicar las ventajas |
+
+**Paso 1 — Escena.** Crear una escena con raíz `Node2D` llamada `Main` y dos hijos:
+- `ColorRect` llamado `Cuadro`: *Size* `100 × 100`, *Position* `(300, 250)`, color `#3380e6`.
+- `Label` llamado `Hud`: *Position* `(20, 20)`.
+
+Guardar como `main.tscn`.
+
+**Paso 2 — Mapa de entrada (solo teclado).** *Proyecto → Configuración del proyecto → Mapa de entrada*: escribir `saltar`, pulsar **Añadir**, luego **`+`**, presionar `Espacio` y **Aceptar**.
+
+**Paso 3 — Script.** Seleccionar `Main`, **Adjuntar script** como `main.gd` y escribir:
+
+```gdscript
+extends Node2D
+
+# Referencias a los nodos de la escena
+@onready var hud: Label = $Hud
+@onready var cuadro: ColorRect = $Cuadro
+
+# Variables para mostrar el estado en pantalla
+var activaciones := 0
+var estado := "En reposo"
+var dispositivo := "ninguno"
+var ultimo_evento := "ninguno"
+var posicion_inicial_y := 0.0
+
+func _ready() -> void:
+	# Guardamos la altura original del cuadro para volver siempre al mismo lugar
+	posicion_inicial_y = cuadro.position.y
+	actualizar_hud()
+
+func _input(event: InputEvent) -> void:
+	# Ignoramos repeticiones automáticas si se deja la tecla presionada
+	if event.is_echo():
+		return
+
+	# Comprobamos si el evento activa la acción "saltar"
+	if event.is_action_pressed("saltar"):
+		activaciones += 1
+		estado = "Saltando"
+
+		# Identificamos el dispositivo solo para mostrarlo en el Hud
+		if event is InputEventKey:
+			dispositivo = "Teclado"
+			ultimo_evento = "InputEventKey"
+		elif event is InputEventMouseButton:
+			dispositivo = "Ratón"
+			ultimo_evento = "InputEventMouseButton"
+		elif event is InputEventJoypadButton:
+			dispositivo = "Mando"
+			ultimo_evento = "InputEventJoypadButton"
+
+		# Reacción visible en pantalla: el cuadro sube y se pone verde
+		cuadro.position.y = posicion_inicial_y - 40
+		cuadro.color = Color.GREEN
+		actualizar_hud()
+
+	# Comprobamos si el evento suelta la acción "saltar"
+	elif event.is_action_released("saltar"):
+		estado = "En reposo"
+
+		# Restauramos la posición original y el color azul
+		cuadro.position.y = posicion_inicial_y
+		cuadro.color = Color("#3380e6")
+		actualizar_hud()
+
+func actualizar_hud() -> void:
+	hud.text = "Acción: saltar\n"
+	hud.text += "Estado: %s\n" % estado
+	hud.text += "Activaciones: %d\n" % activaciones
+	hud.text += "Dispositivo: %s\n" % dispositivo
+	hud.text += "Último evento: %s" % ultimo_evento
+```
+
+**Paso 4 — Primera prueba.** Ejecutar con `F6`. Al presionar `Espacio`, `Cuadro` sube 40 px y se pone verde; al soltar, vuelve a azul. El `Hud` muestra `Dispositivo: Teclado` e `InputEventKey`. El clic izquierdo todavía no hace nada.
+
+**Paso 5 — Segundo dispositivo sin tocar el código.** Detener el juego, volver al *Mapa de entrada*, pulsar **`+`** en `saltar` y añadir **Botón izquierdo del ratón** (opcional: un botón de mando). **No se edita `main.gd`.**
+
+**Paso 6 — Segunda prueba.** Ejecutar otra vez y alternar `Espacio` y `Clic izquierdo`: `Cuadro` reacciona igual y el `Hud` cambia entre `Teclado` (`InputEventKey`) y `Ratón` (`InputEventMouseButton`).
+
+> Si una acción no responde: detener el juego, volver a ejecutarlo y hacer clic dentro de la ventana para darle el foco.
 
 ---
 
@@ -203,11 +294,11 @@ var control_actual := "Espacio / Clic izquierdo"
 
 | Minutos | Momento | Qué se hace | Responsable |
 | --- | --- | --- | --- |
-| **0 – 3 min** | Apertura | Presentación del grupo, del subtema (*Una acción, muchos dispositivos*) y de los 3 objetivos de aprendizaje. | `[Integrante]` |
-| **3 – 12 min** | Presentación | Explicación conceptual, ventajas (pruebas, remapeo y accesibilidad), error frecuente y ejemplo de *Celeste*. | `[Integrante(s)]` |
-| **12 – 20 min** | Ejercicio en vivo | Demostración paso a paso en Godot 4.7.x (`ejercicio-g-4/`): teclado primero y segundo dispositivo sin cambiar el código. | `[Integrante(s)]` |
+| **0 – 3 min** | Apertura | Presentación del grupo, del subtema (*Una acción, muchos dispositivos*) y de los 3 objetivos de aprendizaje. | Christian Bonifaz |
+| **3 – 12 min** | Presentación | Explicación conceptual, ventajas (pruebas, remapeo y accesibilidad), error frecuente y ejemplo de *Celeste*. | Anabel Dávila (concepto, Mapa de entrada y código) · Alejandro Montufar (ventajas, error frecuente y *Celeste*) |
+| **12 – 20 min** | Ejercicio en vivo | Demostración paso a paso en Godot 4.7.x (`ejercicio-g-4/`): teclado primero y segundo dispositivo sin cambiar el código. | Anabel Dávila (en el editor) · Alejandro Montufar (explica) |
 | **20 – 27 min** | Reto para el curso | Remapeo en tiempo de ejecución de la acción `saltar` con `InputMap` (tecla `R`) sin modificar la lógica del salto — el grupo acompaña y entrega la pista si hace falta. | `Todos` |
-| **27 – 30 min** | Cierre | Mostrar la solución del reto (`reto-g-4/`) y resumir las tres ideas clave. | `[Integrante]` |
+| **27 – 30 min** | Cierre | Mostrar la solución del reto (`reto-g-4/`) y resumir las tres ideas clave. | Todos (una idea clave cada uno) |
 
 ---
 

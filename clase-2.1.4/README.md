@@ -19,6 +19,20 @@
 
 ---
 
+## Contenido de la carpeta
+
+| Archivo / carpeta | Qué es |
+| --- | --- |
+| `Presentacion_Grupo4.pdf` | Presentación (10 diapositivas) |
+| `Plan_de_Clase_Grupo4.pdf` / `.md` | Plan de clase completado: investigación (Paso 1), ejercicio con pasos escritos (Paso 3), reto, cronograma y referencias APA 7 |
+| `ejercicio-g-4/` | Proyecto Godot del ejercicio (`Ejercicio_G4`) |
+| `Reto_Grupo4.md` | Enunciado, requisitos, pista y solución del reto |
+| `reto-g-4/` | Proyecto Godot con la solución del reto (`Reto_G4`) |
+
+Repositorio: https://github.com/cmbonifaz/Videojuegos-G4-36870/tree/main/clase-2.1.4
+
+---
+
 ## Cómo ejecutar el ejercicio
 
 1. Abre **Godot 4.7.x**.
